@@ -156,49 +156,54 @@
 
             <!-- Floating 3D Fan Control Bar (Speed, Direction, Light, Wind Streaks) -->
             <div class="floating-fan-controller" aria-label="Ceiling Fan Interactive Controls">
-              <!-- Fan Speed Step Controller -->
-              <div class="controller-group speed-group">
-                <div class="controller-label">
-                  <i data-lucide="activity"></i>
-                  <span>FAN SPEED: <strong id="speedDisplayTxt">2</strong></span>
+              <!-- Primary Row: Speed & Airflow Direction -->
+              <div class="controller-primary-row">
+                <!-- Fan Speed Step Controller -->
+                <div class="ctrl-block speed-block">
+                  <div class="ctrl-block-label">
+                    <i data-lucide="activity"></i>
+                    <span>FAN SPEED: <strong id="speedDisplayTxt">2 (Gentle)</strong></span>
+                  </div>
+                  <div class="speed-steps" id="speedStepsContainer">
+                    <button class="speed-step-btn" data-speed="0" title="Turn Fan Off">OFF</button>
+                    <button class="speed-step-btn" data-speed="1" title="Speed 1 - Whisper (65 RPM)">1</button>
+                    <button class="speed-step-btn active" data-speed="2" title="Speed 2 - Gentle Breeze (120 RPM)">2</button>
+                    <button class="speed-step-btn" data-speed="3" title="Speed 3 - Comfort Airflow (175 RPM)">3</button>
+                    <button class="speed-step-btn" data-speed="4" title="Speed 4 - High Velocity (230 RPM)">4</button>
+                    <button class="speed-step-btn" data-speed="5" title="Speed 5 - Turbo Hurricane (290 RPM)">5</button>
+                  </div>
                 </div>
-                <div class="speed-steps" id="speedStepsContainer">
-                  <button class="speed-step-btn" data-speed="0" title="Turn Fan Off">OFF</button>
-                  <button class="speed-step-btn" data-speed="1" title="Speed 1 - Whisper (65 RPM)">1</button>
-                  <button class="speed-step-btn active" data-speed="2" title="Speed 2 - Gentle Breeze (120 RPM)">2</button>
-                  <button class="speed-step-btn" data-speed="3" title="Speed 3 - Comfort Airflow (175 RPM)">3</button>
-                  <button class="speed-step-btn" data-speed="4" title="Speed 4 - High Velocity (230 RPM)">4</button>
-                  <button class="speed-step-btn" data-speed="5" title="Speed 5 - Turbo Hurricane (290 RPM)">5</button>
+
+                <div class="ctrl-v-divider"></div>
+
+                <!-- Airflow Reversible Direction (Summer / Winter) -->
+                <div class="ctrl-block dir-block">
+                  <div class="ctrl-block-label">
+                    <i data-lucide="refresh-cw"></i>
+                    <span>AIRFLOW: <strong id="dirModeTxt">Summer Downdraft</strong></span>
+                  </div>
+                  <div class="direction-toggle-container">
+                    <button class="dir-btn active" id="dirSummerBtn" title="Counter-clockwise downdraft for cooling breeze">
+                      <i data-lucide="sun"></i>
+                      <span>Summer ↓</span>
+                    </button>
+                    <button class="dir-btn" id="dirWinterBtn" title="Clockwise updraft for circulating warm air">
+                      <i data-lucide="snowflake"></i>
+                      <span>Winter ↑</span>
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              <!-- Airflow Reversible Direction (Summer / Winter) -->
-              <div class="controller-group direction-group">
-                <div class="controller-label">
-                  <i data-lucide="refresh-cw"></i>
-                  <span>AIRFLOW MODE</span>
-                </div>
-                <div class="direction-toggle-container">
-                  <button class="dir-btn active" id="dirSummerBtn" title="Counter-clockwise downdraft for cooling breeze">
-                    <i data-lucide="sun"></i>
-                    <span>Summer (Downdraft)</span>
+              <!-- Secondary Row: Integrated LED Light & Atmosphere -->
+              <div class="controller-secondary-row">
+                <!-- LED Light Controls -->
+                <div class="ctrl-subgroup light-subgroup">
+                  <button class="light-power-switch active" id="lightToggleBtn" title="Toggle LED Light">
+                    <i data-lucide="lightbulb"></i>
+                    <span>Light: <strong>ON</strong></span>
                   </button>
-                  <button class="dir-btn" id="dirWinterBtn" title="Clockwise updraft for circulating warm air">
-                    <i data-lucide="snowflake"></i>
-                    <span>Winter (Updraft)</span>
-                  </button>
-                </div>
-              </div>
 
-              <!-- Integrated LED Light Controls -->
-              <div class="controller-group light-group">
-                <div class="controller-label">
-                  <i data-lucide="lightbulb"></i>
-                  <span>SMART LED KIT</span>
-                  <button class="light-power-switch active" id="lightToggleBtn" title="Toggle LED Light">ON</button>
-                </div>
-                <div class="light-subcontrols">
-                  <!-- Kelvin Temperature Presets -->
                   <div class="kelvin-picker" id="kelvinContainer">
                     <button class="kelvin-chip active" data-kelvin="2700" title="2700K Warm Ambient Glow">
                       <span class="kelvin-dot warm"></span> 2700K Warm
@@ -210,25 +215,25 @@
                       <span class="kelvin-dot daylight"></span> 6000K Crisp
                     </button>
                   </div>
-                  <!-- Dimmer Slider -->
-                  <div class="dimmer-slider-wrap">
+
+                  <div class="dimmer-slider-wrap" title="Adjust LED Brightness">
                     <i data-lucide="sun-medium" class="dimmer-icon"></i>
                     <input type="range" id="lightBrightnessSlider" min="10" max="100" value="85" aria-label="Light Brightness" />
                     <span id="brightnessVal">85%</span>
                   </div>
                 </div>
-              </div>
 
-              <!-- Particle / Wind Streamlines Toggle -->
-              <div class="controller-group visual-effects-group">
-                <button class="pill-toggle active" id="airflowParticlesToggle" title="Show aerodynamic airflow visual particles">
-                  <i data-lucide="wind"></i>
-                  <span>Wind Vortex: <strong>ON</strong></span>
-                </button>
-                <button class="pill-toggle" id="ceilingSurfaceToggle" title="Change Ceiling Texture">
-                  <i data-lucide="layers"></i>
-                  <span>Ceiling: <strong id="ceilingSurfaceLabel">Modern White</strong></span>
-                </button>
+                <!-- Visual Effects Toggles -->
+                <div class="ctrl-subgroup visual-effects-subgroup">
+                  <button class="pill-toggle active" id="airflowParticlesToggle" title="Show aerodynamic airflow visual particles">
+                    <i data-lucide="wind"></i>
+                    <span>Vortex: <strong>ON</strong></span>
+                  </button>
+                  <button class="pill-toggle" id="ceilingSurfaceToggle" title="Change Ceiling Texture">
+                    <i data-lucide="layers"></i>
+                    <span id="ceilingSurfaceLabel">Modern White</span>
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -554,120 +559,6 @@
         </div>
       </section>
 
-      <!-- BRAND STORY & AIRFLOW ENGINEERING -->
-      <section class="section tech-specs-section" id="tech-specs">
-        <div class="container">
-          <div class="section-title-wrap text-center">
-            <span class="section-eyebrow">AERONAUTICAL PRECISION</span>
-            <h2 class="section-title">Engineered to Move Massive Air with Zero Noise</h2>
-            <p class="section-subtitle">
-              Traditional ceiling fans waste 70% of their electrical energy as heat and vibration. AURA’s bespoke brushless DC motors and carbon composite airfoils displace up to 6,850 CFM of air at an imperceptible 18 decibels.
-            </p>
-          </div>
-
-          <div class="specs-grid">
-            <div class="spec-card">
-              <div class="spec-icon-wrap">
-                <i data-lucide="cpu"></i>
-              </div>
-              <h3 class="spec-title">WhisperQuiet™ 6-Speed DC Motor</h3>
-              <p class="spec-text">
-                Permanent neodymium magnets deliver unmatched torque and precision speed modulation while cutting power consumption by 72% compared to conventional AC induction fans.
-              </p>
-              <div class="spec-metric">
-                <span class="metric-number">18.2 dB</span>
-                <span class="metric-label">Virtually inaudible sound output</span>
-              </div>
-            </div>
-
-            <div class="spec-card">
-              <div class="spec-icon-wrap">
-                <i data-lucide="wind"></i>
-              </div>
-              <h3 class="spec-title">Aerodynamic Winglet Airfoils</h3>
-              <p class="spec-text">
-                Sculpted with a varying progressive 14° angle of attack, eliminating edge vortices and producing a wide, non-turbulent column of gentle laminar airflow.
-              </p>
-              <div class="spec-metric">
-                <span class="metric-number">6,850 CFM</span>
-                <span class="metric-label">Max air displacement velocity</span>
-              </div>
-            </div>
-
-            <div class="spec-card">
-              <div class="spec-icon-wrap">
-                <i data-lucide="sun"></i>
-              </div>
-              <h3 class="spec-title">Dynamic Circadian LED Light Kit</h3>
-              <p class="spec-text">
-                Integrated 1,600-lumen edge-lit optical diffuser. Automatically transitions from energizing 6000K daylight to calming 2700K warm twilight to synchronize with your body’s circadian rhythm.
-              </p>
-              <div class="spec-metric">
-                <span class="metric-number">95+ CRI</span>
-                <span class="metric-label">Museum-grade color rendering</span>
-              </div>
-            </div>
-
-            <div class="spec-card">
-              <div class="spec-icon-wrap">
-                <i data-lucide="wifi"></i>
-              </div>
-              <h3 class="spec-title">Matter & Native Smart Home</h3>
-              <p class="spec-text">
-                No proprietary hubs required. Seamlessly connects with Apple Home, Home Assistant, Google Home, and Alexa over Thread and Wi-Fi for intuitive automated climate scenes.
-              </p>
-              <div class="spec-metric">
-                <span class="metric-number">Thread / Wi-Fi</span>
-                <span class="metric-label">Sub-millisecond local response</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Interactive Comparison Table: AURA DC vs Traditional AC Fan -->
-          <div class="comparison-block">
-            <h3 class="comparison-header">How AURA Outperforms Traditional Ceiling Fans</h3>
-            <div class="comparison-table-wrapper">
-              <table class="comparison-table">
-                <thead>
-                  <tr>
-                    <th>Feature & Performance</th>
-                    <th class="aura-col">AURA ARCHITECTURAL (DC)</th>
-                    <th>Standard Industry Fan (AC)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Energy Consumption</td>
-                    <td class="aura-col"><strong class="highlight-text">28 Watts (Max Turbo)</strong></td>
-                    <td>85 - 110 Watts</td>
-                  </tr>
-                  <tr>
-                    <td>Acoustic Decibel Rating</td>
-                    <td class="aura-col"><strong class="highlight-text">18.2 dB (Whisper Quiet)</strong></td>
-                    <td>42 - 58 dB (Noticeable Motor Hum)</td>
-                  </tr>
-                  <tr>
-                    <td>Speed Precision</td>
-                    <td class="aura-col">6 Micro-calibrated Steps + Sleep Breeze</td>
-                    <td>3 Clunky Pull-Chain Speeds</td>
-                  </tr>
-                  <tr>
-                    <td>Reversible Airflow</td>
-                    <td class="aura-col">Instant One-Touch Remote/App Switch</td>
-                    <td>Manual Physical Switch on Motor Body</td>
-                  </tr>
-                  <tr>
-                    <td>Motor Warranty</td>
-                    <td class="aura-col"><strong class="highlight-text">Lifetime Comprehensive</strong></td>
-                    <td>1 - 3 Year Limited</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- CURATED COLLECTIONS CATALOG -->
       <section class="section collections-section" id="collections-section">
         <div class="container">
@@ -836,6 +727,120 @@
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BRAND STORY & AIRFLOW ENGINEERING -->
+      <section class="section tech-specs-section" id="tech-specs">
+        <div class="container">
+          <div class="section-title-wrap text-center">
+            <span class="section-eyebrow">AERONAUTICAL PRECISION</span>
+            <h2 class="section-title">Engineered to Move Massive Air with Zero Noise</h2>
+            <p class="section-subtitle">
+              Traditional ceiling fans waste 70% of their electrical energy as heat and vibration. AURA’s bespoke brushless DC motors and carbon composite airfoils displace up to 6,850 CFM of air at an imperceptible 18 decibels.
+            </p>
+          </div>
+
+          <div class="specs-grid">
+            <div class="spec-card">
+              <div class="spec-icon-wrap">
+                <i data-lucide="cpu"></i>
+              </div>
+              <h3 class="spec-title">WhisperQuiet™ 6-Speed DC Motor</h3>
+              <p class="spec-text">
+                Permanent neodymium magnets deliver unmatched torque and precision speed modulation while cutting power consumption by 72% compared to conventional AC induction fans.
+              </p>
+              <div class="spec-metric">
+                <span class="metric-number">18.2 dB</span>
+                <span class="metric-label">Virtually inaudible sound output</span>
+              </div>
+            </div>
+
+            <div class="spec-card">
+              <div class="spec-icon-wrap">
+                <i data-lucide="wind"></i>
+              </div>
+              <h3 class="spec-title">Aerodynamic Winglet Airfoils</h3>
+              <p class="spec-text">
+                Sculpted with a varying progressive 14° angle of attack, eliminating edge vortices and producing a wide, non-turbulent column of gentle laminar airflow.
+              </p>
+              <div class="spec-metric">
+                <span class="metric-number">6,850 CFM</span>
+                <span class="metric-label">Max air displacement velocity</span>
+              </div>
+            </div>
+
+            <div class="spec-card">
+              <div class="spec-icon-wrap">
+                <i data-lucide="sun"></i>
+              </div>
+              <h3 class="spec-title">Dynamic Circadian LED Light Kit</h3>
+              <p class="spec-text">
+                Integrated 1,600-lumen edge-lit optical diffuser. Automatically transitions from energizing 6000K daylight to calming 2700K warm twilight to synchronize with your body’s circadian rhythm.
+              </p>
+              <div class="spec-metric">
+                <span class="metric-number">95+ CRI</span>
+                <span class="metric-label">Museum-grade color rendering</span>
+              </div>
+            </div>
+
+            <div class="spec-card">
+              <div class="spec-icon-wrap">
+                <i data-lucide="wifi"></i>
+              </div>
+              <h3 class="spec-title">Matter & Native Smart Home</h3>
+              <p class="spec-text">
+                No proprietary hubs required. Seamlessly connects with Apple Home, Home Assistant, Google Home, and Alexa over Thread and Wi-Fi for intuitive automated climate scenes.
+              </p>
+              <div class="spec-metric">
+                <span class="metric-number">Thread / Wi-Fi</span>
+                <span class="metric-label">Sub-millisecond local response</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Comparison Table: AURA DC vs Traditional AC Fan -->
+          <div class="comparison-block">
+            <h3 class="comparison-header">How AURA Outperforms Traditional Ceiling Fans</h3>
+            <div class="comparison-table-wrapper">
+              <table class="comparison-table">
+                <thead>
+                  <tr>
+                    <th>Feature & Performance</th>
+                    <th class="aura-col">AURA ARCHITECTURAL (DC)</th>
+                    <th>Standard Industry Fan (AC)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Energy Consumption</td>
+                    <td class="aura-col"><strong class="highlight-text">28 Watts (Max Turbo)</strong></td>
+                    <td>85 - 110 Watts</td>
+                  </tr>
+                  <tr>
+                    <td>Acoustic Decibel Rating</td>
+                    <td class="aura-col"><strong class="highlight-text">18.2 dB (Whisper Quiet)</strong></td>
+                    <td>42 - 58 dB (Noticeable Motor Hum)</td>
+                  </tr>
+                  <tr>
+                    <td>Speed Precision</td>
+                    <td class="aura-col">6 Micro-calibrated Steps + Sleep Breeze</td>
+                    <td>3 Clunky Pull-Chain Speeds</td>
+                  </tr>
+                  <tr>
+                    <td>Reversible Airflow</td>
+                    <td class="aura-col">Instant One-Touch Remote/App Switch</td>
+                    <td>Manual Physical Switch on Motor Body</td>
+                  </tr>
+                  <tr>
+                    <td>Motor Warranty</td>
+                    <td class="aura-col"><strong class="highlight-text">Lifetime Comprehensive</strong></td>
+                    <td>1 - 3 Year Limited</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

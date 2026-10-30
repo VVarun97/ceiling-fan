@@ -150,6 +150,32 @@ class TextureFactory {
     this.cache.set(key, texture);
     return texture;
   }
+
+  createParticleTexture() {
+    const key = 'particle-glow';
+    if (this.cache.has(key)) return this.cache.get(key);
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 64;
+    canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+
+    // Smooth soft radial feather glow - no square pixel artifacts!
+    const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+    grad.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+    grad.addColorStop(0.2, 'rgba(190, 230, 255, 0.7)');
+    grad.addColorStop(0.5, 'rgba(100, 180, 255, 0.2)');
+    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(32, 32, 32, 0, Math.PI * 2);
+    ctx.fill();
+
+    const texture = new THREE.CanvasTexture(canvas);
+    this.cache.set(key, texture);
+    return texture;
+  }
 }
 
 /**
@@ -584,8 +610,8 @@ export class CeilingFanScene {
   }
 
   buildAirflowParticles() {
-    // 220 aerodynamic wind vortex particles
-    const particleCount = 220;
+    // 120 smooth aerodynamic soft breeze particles confined beneath the fan
+    const particleCount = 120;
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
     const alphas = new Float32Array(particleCount);
@@ -594,9 +620,9 @@ export class CeilingFanScene {
     const ySpeeds = new Float32Array(particleCount);
 
     for (let i = 0; i < particleCount; i++) {
-      const r = 0.4 + Math.random() * 2.2;
+      const r = 0.35 + Math.random() * 1.4;
       const angle = Math.random() * Math.PI * 2;
-      const y = -0.2 - Math.random() * 2.8;
+      const y = -0.15 - Math.random() * 1.7; // Kept neatly within top air column, above bottom controls
 
       positions[i * 3] = Math.cos(angle) * r;
       positions[i * 3 + 1] = y;
@@ -604,19 +630,20 @@ export class CeilingFanScene {
 
       radii[i] = r;
       angles[i] = angle;
-      ySpeeds[i] = 0.8 + Math.random() * 1.5;
-      alphas[i] = 0.2 + Math.random() * 0.6;
+      ySpeeds[i] = 0.5 + Math.random() * 0.9;
+      alphas[i] = 0.2 + Math.random() * 0.4;
     }
 
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     this.particleData = { radii, angles, ySpeeds, alphas, count: particleCount };
 
-    // Point material
+    // Soft glowing radial particle sprite (No square pixels)
     const particleMat = new THREE.PointsMaterial({
-      color: 0x90caf9,
-      size: 0.05,
+      map: this.textures.createParticleTexture(),
+      color: 0x9ed8ff,
+      size: 0.14,
       transparent: true,
-      opacity: 0.55,
+      opacity: 0.28,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
@@ -635,36 +662,36 @@ export class CeilingFanScene {
 
     const positions = this.particleSystem.geometry.attributes.position.array;
     const { radii, angles, ySpeeds, count } = this.particleData;
-    const speedRatio = Math.abs(this.currentAngularVelocity) / 25; // 0 to 1
+    const speedRatio = Math.abs(this.currentAngularVelocity) / 30; // 0 to 1
     const isDowndraft = this.direction === 1;
 
     for (let i = 0; i < count; i++) {
       // Swirl angle follows fan rotor
-      angles[i] += this.currentAngularVelocity * delta * 0.45;
+      angles[i] += this.currentAngularVelocity * delta * 0.35;
 
       // Vertical flow: downward for summer cooling, upward for winter warmth
       if (isDowndraft) {
-        positions[i * 3 + 1] -= ySpeeds[i] * delta * (1.2 + speedRatio * 3.5);
-        if (positions[i * 3 + 1] < -3.2) {
-          positions[i * 3 + 1] = -0.2; // reset to top
+        positions[i * 3 + 1] -= ySpeeds[i] * delta * (0.6 + speedRatio * 1.8);
+        if (positions[i * 3 + 1] < -1.85) {
+          positions[i * 3 + 1] = -0.15; // reset near rotor
         }
       } else {
-        positions[i * 3 + 1] += ySpeeds[i] * delta * (1.2 + speedRatio * 3.5);
-        if (positions[i * 3 + 1] > -0.2) {
-          positions[i * 3 + 1] = -3.2; // reset to bottom
+        positions[i * 3 + 1] += ySpeeds[i] * delta * (0.6 + speedRatio * 1.8);
+        if (positions[i * 3 + 1] > -0.15) {
+          positions[i * 3 + 1] = -1.85; // reset bottom
         }
       }
 
-      // Conical vortex expansion
-      const yNorm = Math.abs(positions[i * 3 + 1]) / 3.0;
-      const currentRadius = radii[i] * (1.0 + yNorm * 0.6);
+      // Conical vortex column expansion
+      const yNorm = Math.abs(positions[i * 3 + 1]) / 1.8;
+      const currentRadius = radii[i] * (0.95 + yNorm * 0.35);
 
       positions[i * 3] = Math.cos(angles[i]) * currentRadius;
       positions[i * 3 + 2] = Math.sin(angles[i]) * currentRadius;
     }
 
     this.particleSystem.geometry.attributes.position.needsUpdate = true;
-    this.particleSystem.material.opacity = 0.2 + speedRatio * 0.55;
+    this.particleSystem.material.opacity = Math.min(0.4, 0.08 + speedRatio * 0.28);
   }
 
   /**

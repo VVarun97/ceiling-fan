@@ -21,6 +21,7 @@ class App {
     this.init3DScene();
 
     // 3. Bind UI Event Handlers
+    this.bindNavigation();
     this.bindSwatches();
     this.bindConfigurationPills();
     this.bindFanControls();
@@ -226,6 +227,7 @@ class App {
   bindFanControls() {
     // 1. Fan Speed Steps (OFF, 1, 2, 3, 4, 5)
     const speedStepsContainer = document.getElementById('speedStepsContainer');
+    const speedDisplayTxt = document.getElementById('speedDisplayTxt');
     if (speedStepsContainer) {
       speedStepsContainer.addEventListener('click', (e) => {
         const btn = e.target.closest('.speed-step-btn');
@@ -239,7 +241,8 @@ class App {
         if (this.fanScene) this.fanScene.setSpeed(speed);
         audioEngine.setSpeed(speed);
 
-        const speedNames = ['Motor Disengaged', 'Whisper Air', 'Gentle Breeze', 'Comfort Airflow', 'High Velocity', 'Turbo Cyclone'];
+        const speedNames = ['OFF', '1 (Whisper)', '2 (Gentle)', '3 (Comfort)', '4 (High)', '5 (Turbo)'];
+        if (speedDisplayTxt) speedDisplayTxt.textContent = speedNames[speed] || speed;
         this.showToast(`Fan set to Speed ${speed}: ${speedNames[speed]}`, 'info');
       });
     }
@@ -247,6 +250,7 @@ class App {
     // 2. Airflow Direction (Summer vs Winter)
     const dirSummerBtn = document.getElementById('dirSummerBtn');
     const dirWinterBtn = document.getElementById('dirWinterBtn');
+    const dirModeTxt = document.getElementById('dirModeTxt');
 
     if (dirSummerBtn && dirWinterBtn) {
       dirSummerBtn.addEventListener('click', () => {
@@ -254,6 +258,7 @@ class App {
         dirWinterBtn.classList.remove('active');
         store.setState({ airflowDirection: 'summer' });
         if (this.fanScene) this.fanScene.setDirection('summer');
+        if (dirModeTxt) dirModeTxt.textContent = 'Summer Downdraft';
         this.showToast('Summer Mode: Downdraft cooling breeze activated', 'info');
       });
 
@@ -262,6 +267,7 @@ class App {
         dirSummerBtn.classList.remove('active');
         store.setState({ airflowDirection: 'winter' });
         if (this.fanScene) this.fanScene.setDirection('winter');
+        if (dirModeTxt) dirModeTxt.textContent = 'Winter Updraft';
         this.showToast('Winter Mode: Updraft circulating warm air near ceiling', 'info');
       });
     }
@@ -277,7 +283,8 @@ class App {
         const newState = !store.getState().lightOn;
         store.setState({ lightOn: newState });
         lightToggleBtn.classList.toggle('active', newState);
-        lightToggleBtn.textContent = newState ? 'ON' : 'OFF';
+        const strongEl = lightToggleBtn.querySelector('strong');
+        if (strongEl) strongEl.textContent = newState ? 'ON' : 'OFF';
 
         const s = store.getState();
         if (this.fanScene) this.fanScene.setLightState(newState, s.lightKelvin, s.lightBrightness);
@@ -405,6 +412,69 @@ class App {
         store.setState({ currency: e.target.value });
       });
     }
+  }
+
+  bindNavigation() {
+    const navLinks = document.querySelectorAll('.main-nav .nav-link');
+    const sections = [
+      document.getElementById('studio-section'),
+      document.getElementById('collections-section'),
+      document.getElementById('tech-specs'),
+      document.getElementById('room-calculator'),
+      document.getElementById('reviews-section')
+    ].filter(Boolean);
+
+    // 1. Direct click on nav link: smooth scroll and immediately highlight active item
+    navLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (!href || !href.startsWith('#')) return;
+        e.preventDefault();
+
+        const targetId = href.substring(1);
+        const targetEl = document.getElementById(targetId);
+
+        navLinks.forEach((l) => l.classList.remove('active'));
+        link.classList.add('active');
+
+        if (targetEl) {
+          const header = document.getElementById('mainHeader');
+          const headerHeight = header ? header.offsetHeight : 72;
+          const elementPosition = targetEl.getBoundingClientRect().top + window.pageYOffset;
+          const offsetPosition = elementPosition - headerHeight + 2;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // 2. Active Section Scroll Spy via IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -55% 0px',
+      threshold: [0, 0.2]
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          navLinks.forEach((link) => {
+            const href = link.getAttribute('href');
+            if (href === `#${id}`) {
+              link.classList.add('active');
+            } else {
+              link.classList.remove('active');
+            }
+          });
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach((sec) => sectionObserver.observe(sec));
   }
 
   bindCartAndCheckout() {

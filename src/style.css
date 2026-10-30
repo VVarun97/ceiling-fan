@@ -206,14 +206,20 @@ button {
   color: var(--text-secondary);
   transition: color var(--transition-fast);
   position: relative;
-  padding: 6px 0;
+  padding: 8px 2px;
+  cursor: pointer;
 }
 
-.nav-link:hover, .nav-link.active {
+.nav-link:hover {
   color: #ffffff;
 }
 
-.nav-link.active::after {
+.nav-link.active {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.nav-link::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -222,6 +228,21 @@ button {
   height: 2px;
   background: var(--accent-gold);
   border-radius: var(--radius-full);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease;
+  opacity: 0;
+  box-shadow: 0 0 10px var(--accent-gold-glow);
+}
+
+.nav-link.active::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(0.5);
+  opacity: 0.5;
 }
 
 /* Header Action Buttons */
@@ -510,65 +531,89 @@ button {
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
-/* Floating Bottom Fan Controller */
+/* Floating Bottom Fan Controller Dock */
 .floating-fan-controller {
   position: absolute;
-  bottom: 24px;
-  left: 24px;
-  right: 24px;
-  background: rgba(14, 16, 22, 0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: 16px 20px;
-  display: grid;
-  grid-template-columns: auto auto 1fr auto;
-  align-items: center;
-  gap: 24px;
-  z-index: 5;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-}
-
-.controller-group {
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 36px);
+  max-width: 660px;
+  background: rgba(13, 16, 23, 0.86);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  z-index: 5;
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8), 0 0 1px 1px rgba(204, 161, 82, 0.18);
+  transition: all var(--transition-normal);
 }
 
-.controller-label {
+/* Primary Row: Speed & Airflow Direction */
+.controller-primary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+}
+
+.ctrl-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ctrl-block-label {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   color: var(--text-muted);
 }
 
-.controller-label i {
+.ctrl-block-label i {
   width: 13px;
   height: 13px;
   color: var(--accent-gold);
+}
+
+.ctrl-block-label strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.ctrl-v-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* Speed step buttons */
 .speed-steps {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .speed-step-btn {
-  width: 38px;
-  height: 34px;
+  width: 34px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  font-size: 0.8125rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 6px;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--text-secondary);
   transition: all var(--transition-fast);
@@ -577,41 +622,42 @@ button {
 .speed-step-btn:hover {
   background: rgba(255, 255, 255, 0.12);
   color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .speed-step-btn.active {
   background: var(--accent-gold);
   color: #000000;
   border-color: var(--accent-gold);
-  box-shadow: 0 0 15px var(--accent-gold-glow);
+  box-shadow: 0 0 14px var(--accent-gold-glow);
+  font-weight: 800;
 }
 
 /* Direction switch */
 .direction-toggle-container {
   display: flex;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 3px;
-  gap: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 7px;
+  padding: 2px;
+  gap: 3px;
 }
 
 .dir-btn {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 0.75rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.72rem;
   font-weight: 600;
   color: var(--text-secondary);
   transition: all var(--transition-fast);
 }
 
 .dir-btn i {
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
 }
 
 .dir-btn:hover {
@@ -619,32 +665,50 @@ button {
 }
 
 .dir-btn.active {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.15);
   color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* Light Controller */
+/* Secondary Row: LED Light & Environment Toggles */
+.controller-secondary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ctrl-subgroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Light Controller Switch */
 .light-power-switch {
-  margin-left: auto;
-  font-size: 0.65rem;
-  font-weight: 800;
-  padding: 2px 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
   border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  transition: var(--transition-fast);
+}
+
+.light-power-switch i {
+  width: 12px;
+  height: 12px;
 }
 
 .light-power-switch.active {
-  background: rgba(204, 161, 82, 0.25);
+  background: rgba(204, 161, 82, 0.18);
   border-color: var(--border-accent);
   color: var(--accent-gold);
-}
-
-.light-subcontrols {
-  display: flex;
-  align-items: center;
-  gap: 12px;
 }
 
 .kelvin-picker {
@@ -656,17 +720,19 @@ button {
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 5px 8px;
+  padding: 4px 8px;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  font-size: 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 600;
   color: var(--text-secondary);
   transition: var(--transition-fast);
 }
 
 .kelvin-chip:hover {
   color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .kelvin-chip.active {
@@ -676,8 +742,8 @@ button {
 }
 
 .kelvin-dot {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
 }
 
@@ -688,44 +754,47 @@ button {
 .dimmer-slider-wrap {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .dimmer-icon {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   color: var(--accent-gold);
 }
 
 .dimmer-slider-wrap input[type="range"] {
-  width: 80px;
+  width: 65px;
   accent-color: var(--accent-gold);
   cursor: pointer;
+  height: 4px;
 }
 
 #brightnessVal {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-family: monospace;
   color: var(--text-secondary);
-  min-width: 30px;
+  min-width: 28px;
 }
 
 /* Visual effects pills */
-.visual-effects-group {
+.visual-effects-subgroup {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 6px;
+  margin-left: auto;
 }
 
 .pill-toggle {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
+  gap: 6px;
+  padding: 4px 10px;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: var(--radius-full);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 600;
   color: var(--text-secondary);
   transition: var(--transition-fast);
 }
@@ -741,8 +810,8 @@ button {
 }
 
 .pill-toggle i {
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
   color: var(--accent-gold);
 }
 
@@ -1311,6 +1380,10 @@ button {
 /* ==========================================================================
    GLOBAL SECTION STYLES
    ========================================================================== */
+.section, .studio-hero-section {
+  scroll-margin-top: 80px;
+}
+
 .section {
   padding: 90px 24px;
 }
