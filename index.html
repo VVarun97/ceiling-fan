@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AURA™ Architectural Ceiling Fans | Luxury Airflow & 3D Studio</title>
+    <meta
+      name="description"
+      content="Experience luxury aerodynamic ceiling fans with WhisperQuiet™ DC motors. Customize colors, finishes, blade spans, and test real-time 3D spinning airflow."
+    />
+    <!-- Modern Typography: Plus Jakarta Sans & Syne -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body class="theme-dark">
+    <!-- Announcement Bar -->
+    <aside class="top-announcement" aria-label="Announcement">
+      <div class="announcement-content">
+        <span class="badge">SPRING DESIGN SALE</span>
+        <span>Complimentary White-Glove Installation & Free Express Shipping on All Studio Orders</span>
+        <span class="promo-hint">Use code <strong>AURA15</strong> for 15% off</span>
+      </div>
+    </aside>
+
+    <!-- Header Navigation -->
+    <header class="site-header" id="mainHeader">
+      <div class="header-container">
+        <!-- Logo -->
+        <a href="#hero" class="brand-logo" aria-label="Aura Architectural Fans Home">
+          <div class="brand-symbol">
+            <svg viewBox="0 0 32 32" fill="none" class="spin-icon-slow" width="28" height="28">
+              <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.4"/>
+              <path d="M16 16 L16 3 C19 3 21 6 20 10 Z" fill="currentColor"/>
+              <path d="M16 16 L27.26 22.5 C25.76 25.1 22.29 25.6 18.8 23.6 Z" fill="currentColor"/>
+              <path d="M16 16 L4.74 22.5 C4.74 19.5 7.21 16.9 10.7 18.9 Z" fill="currentColor"/>
+              <circle cx="16" cy="16" r="3" fill="#D4AF37"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">AURA</span>
+            <span class="brand-tagline">ARCHITECTURAL AIRFLOW</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="main-nav" aria-label="Main Navigation">
+          <a href="#studio-section" class="nav-link active">3D Studio Configurator</a>
+          <a href="#collections-section" class="nav-link">Collections</a>
+          <a href="#tech-specs" class="nav-link">Engineering</a>
+          <a href="#room-calculator" class="nav-link">Room Sizer (CFM)</a>
+          <a href="#reviews-section" class="nav-link">Reviews</a>
+        </nav>
+
+        <!-- Right Utility Controls -->
+        <div class="header-actions">
+          <!-- Currency Picker -->
+          <div class="currency-selector" title="Select Currency">
+            <select id="currencyPicker" aria-label="Currency Selector">
+              <option value="USD">USD ($)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="GBP">GBP (£)</option>
+            </select>
+          </div>
+
+          <!-- Sound Toggle Button -->
+          <button id="ambientSoundBtn" class="action-btn icon-btn" title="Toggle Breeze Sound Effect" aria-label="Toggle Breeze Sound Effect">
+            <i data-lucide="volume-x" id="soundIcon"></i>
+            <span class="sound-wave-bars">
+              <span></span><span></span><span></span>
+            </span>
+          </button>
+
+          <!-- Wishlist Button -->
+          <button id="wishlistToggleBtn" class="action-btn icon-btn" title="Saved Wishlist" aria-label="View Saved Wishlist">
+            <i data-lucide="heart"></i>
+            <span class="badge-count" id="wishlistCount">0</span>
+          </button>
+
+          <!-- Cart Drawer Button -->
+          <button id="cartDrawerBtn" class="action-btn cart-btn" title="Open Shopping Bag" aria-label="Open Shopping Bag">
+            <i data-lucide="shopping-bag"></i>
+            <span class="cart-label">Bag</span>
+            <span class="badge-count" id="cartCount">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="mainContent">
+      <!-- HERO & 3D STUDIO CONFIGURATOR SECTION -->
+      <section class="studio-hero-section" id="studio-section">
+        <div class="studio-layout">
+          <!-- 3D Fan Interactive Stage -->
+          <div class="viewer-container" id="viewerContainer">
+            <!-- 3D Three.js WebGL Canvas Mount -->
+            <div id="webglMount" class="webgl-mount" aria-label="Interactive 3D spinning ceiling fan model"></div>
+
+            <!-- Loading Spinner Overlay -->
+            <div id="viewerLoader" class="viewer-loader">
+              <div class="spinner-core"></div>
+              <p>Constructing Aerodynamic 3D Engine...</p>
+            </div>
+
+            <!-- Top HUD: Live RPM & Telemetry Display -->
+            <div class="viewer-hud-top">
+              <div class="telemetry-pill">
+                <div class="live-dot" id="liveSpeedDot"></div>
+                <span class="telemetry-label">SPEED:</span>
+                <span class="telemetry-value" id="hudSpeedLabel">GENTLE BREEZE (SPEED 2)</span>
+              </div>
+              <div class="telemetry-pill">
+                <i data-lucide="gauge" class="hud-icon"></i>
+                <span class="telemetry-value" id="hudRpm">120</span>
+                <span class="telemetry-unit">RPM</span>
+              </div>
+              <div class="telemetry-pill">
+                <i data-lucide="wind" class="hud-icon"></i>
+                <span class="telemetry-value" id="hudCfm">4,350</span>
+                <span class="telemetry-unit">CFM</span>
+              </div>
+              <div class="telemetry-pill" title="Noise level at current speed">
+                <i data-lucide="volume-2" class="hud-icon"></i>
+                <span class="telemetry-value" id="hudDb">18.2</span>
+                <span class="telemetry-unit">dB</span>
+              </div>
+            </div>
+
+            <!-- Camera Perspective Selector Bar -->
+            <div class="camera-controls-bar" aria-label="Camera Perspective Views">
+              <button class="cam-btn active" data-view="perspective" title="3/4 Perspective Studio View">
+                <i data-lucide="box"></i>
+                <span>3/4 Angle</span>
+              </button>
+              <button class="cam-btn" data-view="bottom" title="View from Below (Ceiling Vortex)">
+                <i data-lucide="arrow-up-circle"></i>
+                <span>Ceiling View</span>
+              </button>
+              <button class="cam-btn" data-view="side" title="Side Profile">
+                <i data-lucide="align-justify"></i>
+                <span>Side Profile</span>
+              </button>
+              <button class="cam-btn" data-view="room" title="Architectural Living Room Context">
+                <i data-lucide="maximize"></i>
+                <span>In-Room View</span>
+              </button>
+              <button class="cam-btn" id="resetCamBtn" title="Reset View Angle">
+                <i data-lucide="rotate-ccw"></i>
+              </button>
+            </div>
+
+            <!-- Floating 3D Fan Control Bar (Speed, Direction, Light, Wind Streaks) -->
+            <div class="floating-fan-controller" aria-label="Ceiling Fan Interactive Controls">
+              <!-- Fan Speed Step Controller -->
+              <div class="controller-group speed-group">
+                <div class="controller-label">
+                  <i data-lucide="activity"></i>
+                  <span>FAN SPEED: <strong id="speedDisplayTxt">2</strong></span>
+                </div>
+                <div class="speed-steps" id="speedStepsContainer">
+                  <button class="speed-step-btn" data-speed="0" title="Turn Fan Off">OFF</button>
+                  <button class="speed-step-btn" data-speed="1" title="Speed 1 - Whisper (65 RPM)">1</button>
+                  <button class="speed-step-btn active" data-speed="2" title="Speed 2 - Gentle Breeze (120 RPM)">2</button>
+                  <button class="speed-step-btn" data-speed="3" title="Speed 3 - Comfort Airflow (175 RPM)">3</button>
+                  <button class="speed-step-btn" data-speed="4" title="Speed 4 - High Velocity (230 RPM)">4</button>
+                  <button class="speed-step-btn" data-speed="5" title="Speed 5 - Turbo Hurricane (290 RPM)">5</button>
+                </div>
+              </div>
+
+              <!-- Airflow Reversible Direction (Summer / Winter) -->
+              <div class="controller-group direction-group">
+                <div class="controller-label">
+                  <i data-lucide="refresh-cw"></i>
+                  <span>AIRFLOW MODE</span>
+                </div>
+                <div class="direction-toggle-container">
+                  <button class="dir-btn active" id="dirSummerBtn" title="Counter-clockwise downdraft for cooling breeze">
+                    <i data-lucide="sun"></i>
+                    <span>Summer (Downdraft)</span>
+                  </button>
+                  <button class="dir-btn" id="dirWinterBtn" title="Clockwise updraft for circulating warm air">
+                    <i data-lucide="snowflake"></i>
+                    <span>Winter (Updraft)</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Integrated LED Light Controls -->
+              <div class="controller-group light-group">
+                <div class="controller-label">
+                  <i data-lucide="lightbulb"></i>
+                  <span>SMART LED KIT</span>
+                  <button class="light-power-switch active" id="lightToggleBtn" title="Toggle LED Light">ON</button>
+                </div>
+                <div class="light-subcontrols">
+                  <!-- Kelvin Temperature Presets -->
+                  <div class="kelvin-picker" id="kelvinContainer">
+                    <button class="kelvin-chip active" data-kelvin="2700" title="2700K Warm Ambient Glow">
+                      <span class="kelvin-dot warm"></span> 2700K Warm
+                    </button>
+                    <button class="kelvin-chip" data-kelvin="4000" title="4000K Neutral Natural">
+                      <span class="kelvin-dot neutral"></span> 4000K Neutral
+                    </button>
+                    <button class="kelvin-chip" data-kelvin="6000" title="6000K Crisp Daylight">
+                      <span class="kelvin-dot daylight"></span> 6000K Crisp
+                    </button>
+                  </div>
+                  <!-- Dimmer Slider -->
+                  <div class="dimmer-slider-wrap">
+                    <i data-lucide="sun-medium" class="dimmer-icon"></i>
+                    <input type="range" id="lightBrightnessSlider" min="10" max="100" value="85" aria-label="Light Brightness" />
+                    <span id="brightnessVal">85%</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Particle / Wind Streamlines Toggle -->
+              <div class="controller-group visual-effects-group">
+                <button class="pill-toggle active" id="airflowParticlesToggle" title="Show aerodynamic airflow visual particles">
+                  <i data-lucide="wind"></i>
+                  <span>Wind Vortex: <strong>ON</strong></span>
+                </button>
+                <button class="pill-toggle" id="ceilingSurfaceToggle" title="Change Ceiling Texture">
+                  <i data-lucide="layers"></i>
+                  <span>Ceiling: <strong id="ceilingSurfaceLabel">Modern White</strong></span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Orbit Hint Helper -->
+            <div class="viewer-drag-hint">
+              <i data-lucide="move-3d"></i>
+              <span>Drag to rotate 360° • Scroll to zoom</span>
+            </div>
+          </div>
+
+          <!-- Studio Configuration & Purchasing Panel -->
+          <div class="studio-config-panel">
+            <div class="config-inner">
+              <!-- Series & Badge -->
+              <div class="product-header-badge">
+                <span class="series-tag">ARCHITECTURAL EDITION 2026</span>
+                <div class="product-rating">
+                  <div class="stars-row">
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                  </div>
+                  <span class="rating-text">4.97 (348 verified reviews)</span>
+                </div>
+              </div>
+
+              <!-- Fan Title & Subheading -->
+              <h1 class="fan-title" id="productTitle">Aura Vortex V1 Smart Fan</h1>
+              <p class="fan-tagline">
+                WhisperQuiet™ Brushless DC Motor • Aerodynamic Carbon-Infused Blades • Matter & Apple HomeKit Enabled
+              </p>
+
+              <!-- Live Price Display -->
+              <div class="price-container">
+                <div class="current-price-wrap">
+                  <span class="currency-symbol" id="currSymbol">$</span>
+                  <span class="price-val" id="displayedPrice">589</span>
+                  <span class="price-cents">.00</span>
+                </div>
+                <div class="original-price-wrap">
+                  <span class="orig-price" id="originalPrice">$699.00</span>
+                  <span class="savings-tag" id="savingsTag">SAVE $110</span>
+                </div>
+                <div class="affirm-pill">
+                  <span>or $49/mo with Affirm. 0% APR</span>
+                </div>
+              </div>
+
+              <!-- COLOR & FINISH SELECTION (CORE REQUIREMENT) -->
+              <div class="config-section">
+                <div class="section-header-row">
+                  <label class="section-label">
+                    SELECT FINISH & COLOR:
+                    <span class="active-selection-name" id="selectedColorName">Matte Onyx Black</span>
+                  </label>
+                  <span class="swatch-mode-badge" id="finishTypeBadge">Satin Anodized</span>
+                </div>
+
+                <!-- Swatches Grid: Highlighting rich finishes -->
+                <div class="swatches-grid" id="swatchesContainer" role="radiogroup" aria-label="Fan Color Options">
+                  <!-- Swatches generated dynamically or initialized here -->
+                  <button
+                    class="swatch-btn active"
+                    data-color-id="matte-black"
+                    data-color-name="Matte Onyx Black"
+                    data-color-hex="#18181b"
+                    data-finish="Satin Anodized"
+                    data-price-diff="0"
+                    title="Matte Onyx Black"
+                    aria-label="Matte Onyx Black"
+                  >
+                    <span class="swatch-preview" style="background: radial-gradient(circle at 35% 35%, #2a2a30, #121215)"></span>
+                    <span class="swatch-name">Onyx Black</span>
+                  </button>
+
+                  <button
+                    class="swatch-btn"
+                    data-color-id="champagne-brass"
+                    data-color-name="Brushed Champagne Brass"
+                    data-color-hex="#CCA152"
+                    data-finish="Luxury Brushed Metallic"
+                    data-price-diff="40"
+                    title="Brushed Champagne Brass (+$40)"
+                    aria-label="Brushed Champagne Brass"
+                  >
+                    <span class="swatch-preview" style="background: radial-gradient(circle at 35% 35%, #E6C57A, #A67D2E)"></span>
+                    <span class="swatch-name">Champagne Brass</span>
+                    <span class="swatch-extra-price">+$40</span>
+                  </button>
+
+                  <button
+                    class="swatch-btn"
+                    data-color-id="american-walnut"
+                    data-color-name="American Walnut & Graphite"
+                    data-color-hex="#4b2e1e"
+                    data-finish="Solid Carved Hardwood"
+                    data-price-diff="60"
+                    title="American Walnut (+$60)"
+                    aria-label="American Walnut Wood"
+                  >
+                    <span class="swatch-preview" style="background: radial-gradient(circle at 35% 35%, #6B4226, #321c10)"></span>
+                    <span class="swatch-name">American Walnut</span>
+                    <span class="swatch-extra-price">+$60</span>
+                  </button>
+
+                  <button
+                    class="swatch-btn"
+                    data-color-id="nordic-white"
+                    data-color-name="Scandinavian Nordic White"
+                    data-color-hex="#FAFAFA"
+                    data-finish="Velvet Chalk Powdercoat"
+                    data-price-diff="0"
+                    title="Scandinavian Nordic White"
+                    aria-label="Scandinavian Nordic White"
+                  >
+                    <span class="swatch-preview" style="background: radial-gradient(circle at 35% 35%, #FFFFFF, #E4E4E7)"></span>
+                    <span class="swatch-name">Nordic White</span>
+                  </button>
+
+                  <button
+                    class="swatch-btn"
+                    data-color-id="natural-oak"
+                    data-color-name="Natural Bleached Oak & White"
+                    data-color-hex="#A0815E"
+                    data-finish="Organic Blonde Oak"
+                    data-price-diff="50"
+                    title="Natural Bleached Oak (+$50)"
+                    aria-label="Natural Bleached Oak"
+                  >
+                    <span class="swatch-preview" style="background: radial-gradient(circle at 35% 35%, #CBB393, #8A6A44)"></span>
+                    <span class="swatch-name">Bleached Oak</span>
+                    <span class="swatch-extra-price">+$50</span>
+                  </button>
+
+                  <button
+                    class="swatch-btn"
+                    data-color-id="gunmetal-titanium"
+                    data-color-name="Titanium Gunmetal"
+                    data-color-hex="#3D4046"
+                    data-finish="Aerospace PVD Metallic"
+                    data-price-diff="30"
+                    title="Titanium Gunmetal (+$30)"
+                    aria-label="Titanium Gunmetal"
+                  >
+                    <span class="swatch-preview" style="background: radial-gradient(circle at 35% 35%, #5A5E66, #282A2E)"></span>
+                    <span class="swatch-name">Titanium</span>
+                    <span class="swatch-extra-price">+$30</span>
+                  </button>
+
+                  <button
+                    class="swatch-btn"
+                    data-color-id="coastal-sage"
+                    data-color-name="Coastal Matte Sage"
+                    data-color-hex="#5E7063"
+                    data-finish="Matte Ceramic Finish"
+                    data-price-diff="25"
+                    title="Coastal Matte Sage (+$25)"
+                    aria-label="Coastal Matte Sage"
+                  >
+                    <span class="swatch-preview" style="background: radial-gradient(circle at 35% 35%, #768B7C, #455349)"></span>
+                    <span class="swatch-name">Matte Sage</span>
+                    <span class="swatch-extra-price">+$25</span>
+                  </button>
+
+                  <button
+                    class="swatch-btn"
+                    data-color-id="burnished-copper"
+                    data-color-name="Burnished Rose Copper"
+                    data-color-hex="#AC6244"
+                    data-finish="Mirror Brushed Copper"
+                    data-price-diff="45"
+                    title="Burnished Rose Copper (+$45)"
+                    aria-label="Burnished Rose Copper"
+                  >
+                    <span class="swatch-preview" style="background: radial-gradient(circle at 35% 35%, #D4815E, #813F26)"></span>
+                    <span class="swatch-name">Rose Copper</span>
+                    <span class="swatch-extra-price">+$45</span>
+                  </button>
+                </div>
+
+                <!-- Color Dual-Tone Customizer Toggle -->
+                <div class="color-options-row">
+                  <label class="custom-checkbox-wrap">
+                    <input type="checkbox" id="dualToneToggle" />
+                    <span class="checkmark"></span>
+                    <span>Enable Dual-Tone Finish (Contrasting Motor & Blade Accent)</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- BLADE COUNT CONFIGURATION -->
+              <div class="config-section">
+                <div class="section-header-row">
+                  <label class="section-label">AERODYNAMIC BLADE CONFIGURATION:</label>
+                  <span class="active-selection-name" id="selectedBladeCountLabel">3-Blade Airfoil</span>
+                </div>
+                <div class="option-pills-row" id="bladeCountContainer">
+                  <button class="option-pill active" data-blades="3" data-price="0">
+                    <div class="pill-primary">3-Blade Airfoil</div>
+                    <div class="pill-secondary">Ultra Modern • Max CFM</div>
+                  </button>
+                  <button class="option-pill" data-blades="4" data-price="25">
+                    <div class="pill-primary">4-Blade Sculpted</div>
+                    <div class="pill-secondary">Symmetrical Balance (+ $25)</div>
+                  </button>
+                  <button class="option-pill" data-blades="5" data-price="45">
+                    <div class="pill-primary">5-Blade Whisper</div>
+                    <div class="pill-secondary">Classic Luxury (+ $45)</div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- BLADE SPAN (DIAMETER) -->
+              <div class="config-section">
+                <div class="section-header-row">
+                  <label class="section-label">DIAMETER SPAN:</label>
+                  <span class="active-selection-name" id="selectedSpanLabel">52" (Recommended for 150-300 sq ft)</span>
+                </div>
+                <div class="option-pills-row" id="bladeSpanContainer">
+                  <button class="option-pill" data-span="44" data-price="-30">
+                    <div class="pill-primary">44" Diameter</div>
+                    <div class="pill-secondary">Bedrooms & Home Offices (-$30)</div>
+                  </button>
+                  <button class="option-pill active" data-span="52" data-price="0">
+                    <div class="pill-primary">52" Diameter</div>
+                    <div class="pill-secondary">Standard Living Rooms (Included)</div>
+                  </button>
+                  <button class="option-pill" data-span="60" data-price="55">
+                    <div class="pill-primary">60" Diameter</div>
+                    <div class="pill-secondary">Great Rooms & High Ceilings (+$55)</div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- DOWNROD SUSPENSION LENGTH -->
+              <div class="config-section">
+                <div class="section-header-row">
+                  <label class="section-label">DOWNROD SUSPENSION LENGTH:</label>
+                  <span class="active-selection-name" id="selectedDownrodLabel">6" Standard (8-9 ft ceilings)</span>
+                </div>
+                <div class="option-pills-row" id="downrodContainer">
+                  <button class="option-pill" data-downrod="0" data-price="0">
+                    <div class="pill-primary">Flush Hugger</div>
+                    <div class="pill-secondary">Ceilings &lt; 8ft</div>
+                  </button>
+                  <button class="option-pill active" data-downrod="6" data-price="0">
+                    <div class="pill-primary">6" Standard</div>
+                    <div class="pill-secondary">Ceilings 8–9 ft</div>
+                  </button>
+                  <button class="option-pill" data-downrod="12" data-price="25">
+                    <div class="pill-primary">12" Drop</div>
+                    <div class="pill-secondary">Ceilings 10–11 ft (+$25)</div>
+                  </button>
+                  <button class="option-pill" data-downrod="24" data-price="40">
+                    <div class="pill-primary">24" Vaulted</div>
+                    <div class="pill-secondary">Ceilings 12ft+ (+$40)</div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- SMART HOME KIT ADD-ON -->
+              <div class="config-section">
+                <div class="section-header-row">
+                  <label class="section-label">INTELLIGENT CONTROLS:</label>
+                </div>
+                <label class="smart-addon-card" id="smartAddonCard">
+                  <input type="checkbox" id="smartAddonCheckbox" checked />
+                  <div class="addon-content">
+                    <div class="addon-title-row">
+                      <span class="addon-title">AURA Smart Hub & OLED Wall Remote</span>
+                      <span class="addon-price">+$49 (Discounted)</span>
+                    </div>
+                    <p class="addon-desc">
+                      Enables Matter 1.3 protocol, Apple HomeKit, Siri, Alexa, Google Home voice controls & automated climate schedules.
+                    </p>
+                  </div>
+                </label>
+              </div>
+
+              <!-- ACTIONS: ADD TO CART & BUY NOW -->
+              <div class="cta-actions-group">
+                <div class="quantity-selector-row">
+                  <div class="qty-stepper">
+                    <button class="qty-btn" id="qtyMinus" aria-label="Decrease quantity">−</button>
+                    <span class="qty-num" id="configuredQty">1</span>
+                    <button class="qty-btn" id="qtyPlus" aria-label="Increase quantity">+</button>
+                  </div>
+                  <button class="wishlist-btn" id="addWishlistBtn" title="Save to Wishlist" aria-label="Save to Wishlist">
+                    <i data-lucide="heart" id="wishlistHeartIcon"></i>
+                  </button>
+                </div>
+
+                <button class="btn btn-primary add-to-cart-btn" id="addToCartBtn">
+                  <i data-lucide="shopping-bag"></i>
+                  <span>Add Custom Fan to Bag • <strong id="ctaButtonPrice">$638.00</strong></span>
+                </button>
+
+                <button class="btn btn-secondary instant-buy-btn" id="instantBuyBtn">
+                  <i data-lucide="zap"></i>
+                  <span>Express Checkout with Apple / Google Pay</span>
+                </button>
+              </div>
+
+              <!-- Reassurances -->
+              <div class="trust-guarantees">
+                <div class="trust-item">
+                  <i data-lucide="shield-check"></i>
+                  <span>Lifetime Motor Warranty</span>
+                </div>
+                <div class="trust-item">
+                  <i data-lucide="truck"></i>
+                  <span>Free 2-Day Air Shipping</span>
+                </div>
+                <div class="trust-item">
+                  <i data-lucide="rotate-ccw"></i>
+                  <span>100-Night In-Home Trial</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BRAND STORY & AIRFLOW ENGINEERING -->
+      <section class="section tech-specs-section" id="tech-specs">
+        <div class="container">
+          <div class="section-title-wrap text-center">
+            <span class="section-eyebrow">AERONAUTICAL PRECISION</span>
+            <h2 class="section-title">Engineered to Move Massive Air with Zero Noise</h2>
+            <p class="section-subtitle">
+              Traditional ceiling fans waste 70% of their electrical energy as heat and vibration. AURA’s bespoke brushless DC motors and carbon composite airfoils displace up to 6,850 CFM of air at an imperceptible 18 decibels.
+            </p>
+          </div>
+
+          <div class="specs-grid">
+            <div class="spec-card">
+              <div class="spec-icon-wrap">
+                <i data-lucide="cpu"></i>
+              </div>
+              <h3 class="spec-title">WhisperQuiet™ 6-Speed DC Motor</h3>
+              <p class="spec-text">
+                Permanent neodymium magnets deliver unmatched torque and precision speed modulation while cutting power consumption by 72% compared to conventional AC induction fans.
+              </p>
+              <div class="spec-metric">
+                <span class="metric-number">18.2 dB</span>
+                <span class="metric-label">Virtually inaudible sound output</span>
+              </div>
+            </div>
+
+            <div class="spec-card">
+              <div class="spec-icon-wrap">
+                <i data-lucide="wind"></i>
+              </div>
+              <h3 class="spec-title">Aerodynamic Winglet Airfoils</h3>
+              <p class="spec-text">
+                Sculpted with a varying progressive 14° angle of attack, eliminating edge vortices and producing a wide, non-turbulent column of gentle laminar airflow.
+              </p>
+              <div class="spec-metric">
+                <span class="metric-number">6,850 CFM</span>
+                <span class="metric-label">Max air displacement velocity</span>
+              </div>
+            </div>
+
+            <div class="spec-card">
+              <div class="spec-icon-wrap">
+                <i data-lucide="sun"></i>
+              </div>
+              <h3 class="spec-title">Dynamic Circadian LED Light Kit</h3>
+              <p class="spec-text">
+                Integrated 1,600-lumen edge-lit optical diffuser. Automatically transitions from energizing 6000K daylight to calming 2700K warm twilight to synchronize with your body’s circadian rhythm.
+              </p>
+              <div class="spec-metric">
+                <span class="metric-number">95+ CRI</span>
+                <span class="metric-label">Museum-grade color rendering</span>
+              </div>
+            </div>
+
+            <div class="spec-card">
+              <div class="spec-icon-wrap">
+                <i data-lucide="wifi"></i>
+              </div>
+              <h3 class="spec-title">Matter & Native Smart Home</h3>
+              <p class="spec-text">
+                No proprietary hubs required. Seamlessly connects with Apple Home, Home Assistant, Google Home, and Alexa over Thread and Wi-Fi for intuitive automated climate scenes.
+              </p>
+              <div class="spec-metric">
+                <span class="metric-number">Thread / Wi-Fi</span>
+                <span class="metric-label">Sub-millisecond local response</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Comparison Table: AURA DC vs Traditional AC Fan -->
+          <div class="comparison-block">
+            <h3 class="comparison-header">How AURA Outperforms Traditional Ceiling Fans</h3>
+            <div class="comparison-table-wrapper">
+              <table class="comparison-table">
+                <thead>
+                  <tr>
+                    <th>Feature & Performance</th>
+                    <th class="aura-col">AURA ARCHITECTURAL (DC)</th>
+                    <th>Standard Industry Fan (AC)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Energy Consumption</td>
+                    <td class="aura-col"><strong class="highlight-text">28 Watts (Max Turbo)</strong></td>
+                    <td>85 - 110 Watts</td>
+                  </tr>
+                  <tr>
+                    <td>Acoustic Decibel Rating</td>
+                    <td class="aura-col"><strong class="highlight-text">18.2 dB (Whisper Quiet)</strong></td>
+                    <td>42 - 58 dB (Noticeable Motor Hum)</td>
+                  </tr>
+                  <tr>
+                    <td>Speed Precision</td>
+                    <td class="aura-col">6 Micro-calibrated Steps + Sleep Breeze</td>
+                    <td>3 Clunky Pull-Chain Speeds</td>
+                  </tr>
+                  <tr>
+                    <td>Reversible Airflow</td>
+                    <td class="aura-col">Instant One-Touch Remote/App Switch</td>
+                    <td>Manual Physical Switch on Motor Body</td>
+                  </tr>
+                  <tr>
+                    <td>Motor Warranty</td>
+                    <td class="aura-col"><strong class="highlight-text">Lifetime Comprehensive</strong></td>
+                    <td>1 - 3 Year Limited</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CURATED COLLECTIONS CATALOG -->
+      <section class="section collections-section" id="collections-section">
+        <div class="container">
+          <div class="section-title-wrap">
+            <span class="section-eyebrow">THE 2026 FLEET</span>
+            <h2 class="section-title">Explore The Architectural Collection</h2>
+            <p class="section-subtitle">
+              Every space has its own spatial rhythm. Select any model below to test colors or load directly into the 3D studio.
+            </p>
+          </div>
+
+          <div class="catalog-grid" id="catalogGrid">
+            <!-- Product Card 1 -->
+            <div class="catalog-card" data-model="vortex-v1">
+              <div class="card-visual">
+                <div class="visual-fan-badge">BESTSELLER</div>
+                <div class="card-fan-preview spin-fast" style="--fan-color: #18181b">
+                  <svg viewBox="0 0 100 100" class="card-fan-svg">
+                    <circle cx="50" cy="50" r="14" fill="#18181b" stroke="#333" stroke-width="1.5"/>
+                    <path d="M50 50 L50 6 C56 6 62 14 58 26 Z" fill="currentColor"/>
+                    <path d="M50 50 L88 72 C83 80 72 82 61 74 Z" fill="currentColor"/>
+                    <path d="M50 50 L12 72 C12 62 19 54 31 60 Z" fill="currentColor"/>
+                    <circle cx="50" cy="50" r="6" fill="#D4AF37"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="card-meta-row">
+                  <span class="card-type">3-Blade Minimalist</span>
+                  <span class="card-rating">★ 4.9 (348)</span>
+                </div>
+                <h3 class="card-title">Aura Vortex V1</h3>
+                <p class="card-desc">The benchmark of minimalist airflow. Sleek swept blades engineered for modern master suites and great rooms.</p>
+                <div class="card-color-picker">
+                  <span class="color-dot active" data-color="#18181b" title="Matte Onyx Black"></span>
+                  <span class="color-dot" data-color="#CCA152" title="Champagne Brass"></span>
+                  <span class="color-dot" data-color="#4b2e1e" title="American Walnut"></span>
+                  <span class="color-dot" data-color="#FAFAFA" title="Nordic White"></span>
+                </div>
+                <div class="card-footer">
+                  <div class="card-price">
+                    <span class="currency">$</span>589
+                  </div>
+                  <button class="btn btn-outline-sm load-studio-btn" data-model-id="vortex-v1">
+                    <i data-lucide="eye"></i>
+                    <span>Customize in 3D</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product Card 2 -->
+            <div class="catalog-card" data-model="halo-smart">
+              <div class="card-visual">
+                <div class="visual-fan-badge highlight">NEW RELEASE</div>
+                <div class="card-fan-preview spin-med" style="--fan-color: #CCA152">
+                  <svg viewBox="0 0 100 100" class="card-fan-svg">
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="#CCA152" stroke-width="2" opacity="0.4"/>
+                    <circle cx="50" cy="50" r="14" fill="#222" stroke="#CCA152" stroke-width="1.5"/>
+                    <path d="M50 50 L50 8 C57 8 62 16 57 28 Z" fill="currentColor"/>
+                    <path d="M50 50 L86 71 C82 78 72 80 62 72 Z" fill="currentColor"/>
+                    <path d="M50 50 L14 71 C14 62 20 54 32 60 Z" fill="currentColor"/>
+                    <circle cx="50" cy="50" r="6" fill="#FFF"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="card-meta-row">
+                  <span class="card-type">Halo Ambient Ring</span>
+                  <span class="card-rating">★ 4.9 (182)</span>
+                </div>
+                <h3 class="card-title">Aura Halo Smart</h3>
+                <p class="card-desc">Sculptural aerodynamic blades surrounded by an ethereal perimeter luminous ring. Architectural statement piece.</p>
+                <div class="card-color-picker">
+                  <span class="color-dot" data-color="#18181b" title="Matte Onyx Black"></span>
+                  <span class="color-dot active" data-color="#CCA152" title="Champagne Brass"></span>
+                  <span class="color-dot" data-color="#3D4046" title="Titanium"></span>
+                  <span class="color-dot" data-color="#FAFAFA" title="Nordic White"></span>
+                </div>
+                <div class="card-footer">
+                  <div class="card-price">
+                    <span class="currency">$</span>649
+                  </div>
+                  <button class="btn btn-outline-sm load-studio-btn" data-model-id="halo-smart">
+                    <i data-lucide="eye"></i>
+                    <span>Customize in 3D</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product Card 3 -->
+            <div class="catalog-card" data-model="zephyr-wood">
+              <div class="card-visual">
+                <div class="visual-fan-badge">SOLID HARDWOOD</div>
+                <div class="card-fan-preview spin-slow" style="--fan-color: #6B4226">
+                  <svg viewBox="0 0 100 100" class="card-fan-svg">
+                    <circle cx="50" cy="50" r="13" fill="#2a1a10" stroke="#6B4226" stroke-width="1.5"/>
+                    <path d="M50 50 L50 5 C57 5 65 14 60 28 Z" fill="currentColor"/>
+                    <path d="M50 50 L89 72 C83 81 72 82 61 73 Z" fill="currentColor"/>
+                    <path d="M50 50 L11 72 C11 61 19 53 32 60 Z" fill="currentColor"/>
+                    <circle cx="50" cy="50" r="5" fill="#CCA152"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="card-meta-row">
+                  <span class="card-type">Carved Timber 3-Blade</span>
+                  <span class="card-rating">★ 5.0 (215)</span>
+                </div>
+                <h3 class="card-title">Aura Zephyr Woodcraft</h3>
+                <p class="card-desc">Individually balanced plantation-grown American walnut blades. Organic warmth paired with silent DC motor efficiency.</p>
+                <div class="card-color-picker">
+                  <span class="color-dot active" data-color="#6B4226" title="American Walnut"></span>
+                  <span class="color-dot" data-color="#CBB393" title="Bleached Oak"></span>
+                  <span class="color-dot" data-color="#18181b" title="Matte Onyx Black"></span>
+                </div>
+                <div class="card-footer">
+                  <div class="card-price">
+                    <span class="currency">$</span>699
+                  </div>
+                  <button class="btn btn-outline-sm load-studio-btn" data-model-id="zephyr-wood">
+                    <i data-lucide="eye"></i>
+                    <span>Customize in 3D</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product Card 4 -->
+            <div class="catalog-card" data-model="stratos-5">
+              <div class="card-visual">
+                <div class="visual-fan-badge">HIGH OUTPUT</div>
+                <div class="card-fan-preview spin-fast" style="--fan-color: #FAFAFA">
+                  <svg viewBox="0 0 100 100" class="card-fan-svg">
+                    <circle cx="50" cy="50" r="14" fill="#333" stroke="#999" stroke-width="1.5"/>
+                    <path d="M50 50 L50 6 C54 6 58 12 55 24 Z" fill="currentColor"/>
+                    <path d="M50 50 L92 36 C95 40 92 46 81 48 Z" fill="currentColor"/>
+                    <path d="M50 50 L76 90 C72 93 65 91 60 80 Z" fill="currentColor"/>
+                    <path d="M50 50 L24 90 C19 91 16 85 24 76 Z" fill="currentColor"/>
+                    <path d="M50 50 L8 36 C5 32 8 26 21 28 Z" fill="currentColor"/>
+                    <circle cx="50" cy="50" r="6" fill="#D4AF37"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="card-meta-row">
+                  <span class="card-type">5-Blade Grand Luxe</span>
+                  <span class="card-rating">★ 4.95 (142)</span>
+                </div>
+                <h3 class="card-title">Aura Stratos 5-Blade</h3>
+                <p class="card-desc">Symmetrical 5-blade configuration delivering broad, gentle airflow distribution for sprawling living rooms and lofts.</p>
+                <div class="card-color-picker">
+                  <span class="color-dot active" data-color="#FAFAFA" title="Nordic White"></span>
+                  <span class="color-dot" data-color="#18181b" title="Matte Onyx Black"></span>
+                  <span class="color-dot" data-color="#5E7063" title="Coastal Sage"></span>
+                  <span class="color-dot" data-color="#AC6244" title="Rose Copper"></span>
+                </div>
+                <div class="card-footer">
+                  <div class="card-price">
+                    <span class="currency">$</span>634
+                  </div>
+                  <button class="btn btn-outline-sm load-studio-btn" data-model-id="stratos-5">
+                    <i data-lucide="eye"></i>
+                    <span>Customize in 3D</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- INTERACTIVE ROOM SIZER & CFM CALCULATOR -->
+      <section class="section room-calculator-section" id="room-calculator">
+        <div class="container">
+          <div class="calculator-card">
+            <div class="calc-header text-center">
+              <span class="section-eyebrow">SPATIAL ENGINEERING GUIDE</span>
+              <h2 class="calc-title">Interactive Room Sizer & Fan Matcher</h2>
+              <p class="calc-subtitle">
+                Select your room dimensions to calculate the exact recommended blade diameter, airflow CFM, and downrod suspension length for peak aerodynamic efficiency.
+              </p>
+            </div>
+
+            <div class="calculator-body">
+              <div class="calc-inputs-col">
+                <!-- Room Length Slider -->
+                <div class="slider-group">
+                  <div class="slider-header">
+                    <label for="roomLengthInput">Room Length</label>
+                    <span class="slider-val" id="roomLengthVal">16 ft</span>
+                  </div>
+                  <input type="range" id="roomLengthInput" min="8" max="30" value="16" step="1" />
+                </div>
+
+                <!-- Room Width Slider -->
+                <div class="slider-group">
+                  <div class="slider-header">
+                    <label for="roomWidthInput">Room Width</label>
+                    <span class="slider-val" id="roomWidthVal">14 ft</span>
+                  </div>
+                  <input type="range" id="roomWidthInput" min="8" max="30" value="14" step="1" />
+                </div>
+
+                <!-- Ceiling Height Slider -->
+                <div class="slider-group">
+                  <div class="slider-header">
+                    <label for="ceilingHeightInput">Ceiling Height</label>
+                    <span class="slider-val" id="ceilingHeightVal">9.0 ft</span>
+                  </div>
+                  <input type="range" id="ceilingHeightInput" min="7.5" max="18" value="9" step="0.5" />
+                </div>
+
+                <!-- Room Type Selector -->
+                <div class="room-type-buttons" id="roomTypeContainer">
+                  <button class="room-btn active" data-type="living">Living Room</button>
+                  <button class="room-btn" data-type="bedroom">Master Bedroom</button>
+                  <button class="room-btn" data-type="dining">Dining / Kitchen</button>
+                  <button class="room-btn" data-type="outdoor">Covered Patio</button>
+                </div>
+              </div>
+
+              <!-- Recommendation Output Box -->
+              <div class="calc-results-col">
+                <div class="results-inner-box">
+                  <div class="result-badge">YOUR CUSTOM CALCULATION</div>
+                  <div class="area-display">
+                    <span class="area-sqft" id="calcArea">224</span>
+                    <span class="area-unit">Square Feet Total</span>
+                  </div>
+
+                  <div class="recommendation-list">
+                    <div class="rec-row">
+                      <i data-lucide="compass"></i>
+                      <div class="rec-details">
+                        <span class="rec-label">Recommended Blade Span:</span>
+                        <strong class="rec-value" id="recSpan">52" Diameter Airfoil</strong>
+                      </div>
+                    </div>
+                    <div class="rec-row">
+                      <i data-lucide="arrow-down-to-line"></i>
+                      <div class="rec-details">
+                        <span class="rec-label">Recommended Downrod:</span>
+                        <strong class="rec-value" id="recDownrod">6" Standard Suspension</strong>
+                      </div>
+                    </div>
+                    <div class="rec-row">
+                      <i data-lucide="wind"></i>
+                      <div class="rec-details">
+                        <span class="rec-label">Target Airflow Velocity:</span>
+                        <strong class="rec-value" id="recCfm">4,500 – 5,800 CFM</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button class="btn btn-primary btn-block" id="applyRecToStudioBtn">
+                    <i data-lucide="check-circle-2"></i>
+                    <span>Apply Settings to 3D Customizer</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VERIFIED CUSTOMER REVIEWS & GALLERY -->
+      <section class="section reviews-section" id="reviews-section">
+        <div class="container">
+          <div class="section-title-wrap text-center">
+            <span class="section-eyebrow">VERIFIED ARCHITECTURAL INSTALLATIONS</span>
+            <h2 class="section-title">Loved by Interior Designers & Homeowners</h2>
+            <div class="rating-summary-pill">
+              <span class="big-score">4.97</span>
+              <div class="stars-col">
+                <div class="stars-row">
+                  <i data-lucide="star" class="star-filled"></i>
+                  <i data-lucide="star" class="star-filled"></i>
+                  <i data-lucide="star" class="star-filled"></i>
+                  <i data-lucide="star" class="star-filled"></i>
+                  <i data-lucide="star" class="star-filled"></i>
+                </div>
+                <span class="based-on">Based on 348 Verified Purchases</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="reviews-grid">
+            <!-- Review 1 -->
+            <div class="review-card">
+              <div class="review-stars">★★★★★</div>
+              <p class="review-quote">
+                "The 3D color customizer was exact! We configured the Champagne Brass with American Walnut blades for our 18ft loft. When it spins on low, you can’t hear a single decibel. It feels like natural outdoor breeze."
+              </p>
+              <div class="reviewer-meta">
+                <div class="reviewer-avatar">JL</div>
+                <div>
+                  <h4 class="reviewer-name">Julian Laurent</h4>
+                  <span class="reviewer-sub">Architect, Manhattan Penthouse • Verified Buyer</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Review 2 -->
+            <div class="review-card">
+              <div class="review-stars">★★★★★</div>
+              <p class="review-quote">
+                "We replaced three noisy AC fans with the Aura Vortex in Matte Onyx Black. The reverse winter mode circulated heat that was stuck near the rafters, lowering our heating bill by nearly 18%."
+              </p>
+              <div class="reviewer-meta">
+                <div class="reviewer-avatar">SC</div>
+                <div>
+                  <h4 class="reviewer-name">Sophia Chen</h4>
+                  <span class="reviewer-sub">Aspen Chalet • Verified Buyer</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Review 3 -->
+            <div class="review-card">
+              <div class="review-stars">★★★★★</div>
+              <p class="review-quote">
+                "Integration with Apple Home was instantaneous. The circadian dimming light kit looks like museum gallery illumination, not an aftermarket fan bulb. Worth every single penny."
+              </p>
+              <div class="reviewer-meta">
+                <div class="reviewer-avatar">MK</div>
+                <div>
+                  <h4 class="reviewer-name">Marcus Vance</h4>
+                  <span class="reviewer-sub">San Francisco Modernist • Verified Buyer</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ ACCORDION -->
+      <section class="section faq-section">
+        <div class="container">
+          <div class="section-title-wrap text-center">
+            <span class="section-eyebrow">COMMON INQUIRIES</span>
+            <h2 class="section-title">Frequently Asked Questions</h2>
+          </div>
+
+          <div class="faq-accordion" id="faqAccordion">
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>How does the live 3D color customizer correlate to the physical fan?</span>
+                <i data-lucide="chevron-down" class="faq-arrow"></i>
+              </button>
+              <div class="faq-answer">
+                <p>Every finish in our 3D configurator is physically calibrated to our powder-coated aerospace alloys, satin brass PVD platings, and sustainably harvested hand-oiled American hardwoods. What you see spinning on your screen is identical to the delivered product.</p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>What makes a DC motor ceiling fan superior to an AC fan?</span>
+                <i data-lucide="chevron-down" class="faq-arrow"></i>
+              </button>
+              <div class="faq-answer">
+                <p>Direct Current (DC) motors utilize magnetic field rotation rather than mechanical brush friction. This delivers 70% higher energy efficiency, dead-silent operation (&lt;19 dB), 6 distinct speed gradients, and instant digital reversible airflow without climbing a ladder.</p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>Can I install this on a sloped or vaulted ceiling?</span>
+                <i data-lucide="chevron-down" class="faq-arrow"></i>
+              </button>
+              <div class="faq-answer">
+                <p>Yes. The included architectural canopy ball-and-socket suspension supports ceiling slopes up to 33°. For steep cathedral ceilings up to 45°, we include an optional sloped ceiling adapter kit with all extended downrod orders.</p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>What is the 100-Night In-Home Trial?</span>
+                <i data-lucide="chevron-down" class="faq-arrow"></i>
+              </button>
+              <div class="faq-answer">
+                <p>Install the fan and experience its quiet breeze in your home for 100 nights. If you are not completely enchanted by its airflow and design, our white-glove team will pick it up with free return shipping and provide a 100% full refund.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container footer-content">
+        <div class="footer-col brand-col">
+          <div class="footer-brand">
+            <span class="footer-logo">AURA</span>
+            <span class="footer-sub">ARCHITECTURAL AIRFLOW</span>
+          </div>
+          <p class="footer-about">
+            Pioneering whisper-quiet aerodynamic ceiling fans and architectural lighting for modern residences worldwide.
+          </p>
+          <div class="social-links">
+            <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+            <a href="#" aria-label="YouTube"><i data-lucide="youtube"></i></a>
+            <a href="#" aria-label="Pinterest"><i data-lucide="pin"></i></a>
+            <a href="#" aria-label="Twitter"><i data-lucide="twitter"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-heading">Collections</h4>
+          <ul class="footer-links">
+            <li><a href="#collections-section">Vortex V1 Series</a></li>
+            <li><a href="#collections-section">Halo Smart Ambient</a></li>
+            <li><a href="#collections-section">Zephyr Carved Hardwood</a></li>
+            <li><a href="#collections-section">Stratos Grand 60"</a></li>
+            <li><a href="#studio-section">Custom Studio Configurator</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-heading">Engineering & Guides</h4>
+          <ul class="footer-links">
+            <li><a href="#room-calculator">CFM & Room Sizer Tool</a></li>
+            <li><a href="#tech-specs">DC Motor vs AC Technology</a></li>
+            <li><a href="#">Downrod Suspension Guide</a></li>
+            <li><a href="#">Matter & Smart Home Pairing</a></li>
+            <li><a href="#">Energy Star Ratings</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-heading">Client Care</h4>
+          <ul class="footer-links">
+            <li><a href="#">100-Night In-Home Trial</a></li>
+            <li><a href="#">Lifetime Motor Warranty</a></li>
+            <li><a href="#">Order Tracking</a></li>
+            <li><a href="#">Certified Electrician Directory</a></li>
+            <li><a href="#">Contact Concierge</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container footer-bottom-inner">
+          <p>© 2026 AURA Architectural Airflow Inc. All rights reserved.</p>
+          <div class="legal-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Sale</a>
+            <a href="#">Accessibility</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- SLIDE-OUT CART DRAWER -->
+    <div class="cart-drawer-overlay" id="cartOverlay"></div>
+    <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping Bag">
+      <div class="drawer-header">
+        <div class="drawer-title-wrap">
+          <i data-lucide="shopping-bag"></i>
+          <h3>Shopping Bag (<span id="drawerItemCount">0</span>)</h3>
+        </div>
+        <button class="drawer-close-btn" id="closeCartBtn" aria-label="Close cart">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <!-- Free Shipping Meter -->
+      <div class="shipping-meter-wrap">
+        <div class="meter-text" id="shippingMeterText">
+          Add $50 more for <strong>FREE White-Glove Shipping</strong>
+        </div>
+        <div class="meter-bar-track">
+          <div class="meter-bar-fill" id="shippingMeterFill" style="width: 100%"></div>
+        </div>
+      </div>
+
+      <!-- Cart Item List -->
+      <div class="drawer-items-list" id="cartItemsList">
+        <!-- Rendered dynamically -->
+        <div class="empty-cart-state" id="emptyCartState">
+          <i data-lucide="package-open" class="empty-cart-icon"></i>
+          <h4>Your Bag is Empty</h4>
+          <p>Customize your ceiling fan above and click "Add to Bag" to see your order summary.</p>
+        </div>
+      </div>
+
+      <!-- Drawer Footer -->
+      <div class="drawer-footer" id="drawerFooter">
+        <!-- Promo Code Input -->
+        <div class="promo-code-row">
+          <input type="text" id="promoCodeInput" placeholder="Promo code (e.g. AURA15)" />
+          <button id="applyPromoBtn" class="btn btn-sm">Apply</button>
+        </div>
+        <div id="promoFeedback" class="promo-feedback"></div>
+
+        <!-- Subtotal Rows -->
+        <div class="price-breakdown">
+          <div class="breakdown-row">
+            <span>Subtotal</span>
+            <span id="drawerSubtotal">$0.00</span>
+          </div>
+          <div class="breakdown-row" id="discountRow" style="display: none;">
+            <span>Special Discount (15% off)</span>
+            <span class="discount-num" id="drawerDiscount">-$0.00</span>
+          </div>
+          <div class="breakdown-row">
+            <span>White-Glove Shipping</span>
+            <span class="free-text">FREE</span>
+          </div>
+          <div class="breakdown-row total-row">
+            <span>Total</span>
+            <span class="total-price" id="drawerTotal">$0.00</span>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-block checkout-btn" id="proceedCheckoutBtn">
+          <i data-lucide="lock"></i>
+          <span>Proceed to Secure Checkout</span>
+        </button>
+        <p class="checkout-hint">
+          <i data-lucide="shield-check"></i> 256-bit encrypted checkout • 100-Night Guarantee
+        </p>
+      </div>
+    </aside>
+
+    <!-- WISHLIST DRAWER -->
+    <div class="wishlist-drawer-overlay" id="wishlistOverlay"></div>
+    <aside class="wishlist-drawer" id="wishlistDrawer" aria-label="Saved Wishlist">
+      <div class="drawer-header">
+        <div class="drawer-title-wrap">
+          <i data-lucide="heart"></i>
+          <h3>Saved Customizations (<span id="drawerWishlistCount">0</span>)</h3>
+        </div>
+        <button class="drawer-close-btn" id="closeWishlistBtn" aria-label="Close Wishlist">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="drawer-items-list" id="wishlistItemsList">
+        <div class="empty-cart-state" id="emptyWishlistState">
+          <i data-lucide="heart" class="empty-cart-icon"></i>
+          <h4>No Saved Fans Yet</h4>
+          <p>Click the heart icon on any configured fan to save it to your design board.</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CHECKOUT MODAL -->
+    <div class="checkout-modal-overlay" id="checkoutModalOverlay">
+      <div class="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button class="modal-close-btn" id="closeCheckoutModalBtn" aria-label="Close checkout">
+          <i data-lucide="x"></i>
+        </button>
+
+        <div id="checkoutFormStep">
+          <div class="checkout-header">
+            <div class="brand-symbol-small">
+              <span class="brand-name">AURA</span>
+            </div>
+            <h2 id="modalTitle">Express Seamless Checkout</h2>
+            <p>Complete your custom architectural fan order</p>
+          </div>
+
+          <form id="checkoutForm" class="checkout-form">
+            <!-- Express Payment Pills -->
+            <div class="express-pay-buttons">
+              <button type="button" class="express-btn apple-pay" id="applePayBtn">
+                <span>Pay with Pay</span>
+              </button>
+              <button type="button" class="express-btn google-pay" id="googlePayBtn">
+                <span>Pay with GPay</span>
+              </button>
+            </div>
+
+            <div class="form-divider">
+              <span>OR ENTER SHIPPING DETAILS</span>
+            </div>
+
+            <div class="form-row two-col">
+              <div class="form-field">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" required placeholder="Elena" />
+              </div>
+              <div class="form-field">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" required placeholder="Vanderbilt" />
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="emailInput">Email for Order & Tracking Updates</label>
+              <input type="email" id="emailInput" required placeholder="elena@architects.com" />
+            </div>
+
+            <div class="form-field">
+              <label for="addressInput">Delivery Address</label>
+              <input type="text" id="addressInput" required placeholder="742 Evergreen Terrace, Apt 14B" />
+            </div>
+
+            <div class="form-row three-col">
+              <div class="form-field">
+                <label for="cityInput">City</label>
+                <input type="text" id="cityInput" required placeholder="Seattle" />
+              </div>
+              <div class="form-field">
+                <label for="stateInput">State / Province</label>
+                <input type="text" id="stateInput" required placeholder="WA" />
+              </div>
+              <div class="form-field">
+                <label for="zipInput">Postal Code</label>
+                <input type="text" id="zipInput" required placeholder="98101" />
+              </div>
+            </div>
+
+            <!-- Payment Simulation -->
+            <div class="form-field">
+              <label for="cardNum">Credit / Debit Card</label>
+              <div class="card-input-wrapper">
+                <input type="text" id="cardNum" placeholder="4242 •••• •••• 4242" required maxlength="19" />
+                <div class="card-icons">
+                  <span class="chip">VISA</span>
+                  <span class="chip">MC</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="order-summary-box">
+              <div class="summary-line">
+                <span>Items Subtotal:</span>
+                <span id="modalSubtotal">$0.00</span>
+              </div>
+              <div class="summary-line">
+                <span>White-Glove Delivery:</span>
+                <span class="free-text">FREE</span>
+              </div>
+              <div class="summary-line total">
+                <span>Total Amount Due:</span>
+                <strong id="modalTotal">$0.00</strong>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block place-order-btn" id="placeOrderBtn">
+              <i data-lucide="check"></i>
+              <span>Confirm & Place Order</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Success Confirmation Screen -->
+        <div id="checkoutSuccessStep" style="display: none;" class="checkout-success-view">
+          <div class="success-icon-wrap">
+            <i data-lucide="check-circle-2"></i>
+          </div>
+          <h2>Thank You For Your Order!</h2>
+          <p class="order-id-line">
+            Order Confirmation: <strong id="orderIdDisplay">#AUR-892419</strong>
+          </p>
+          <p class="success-desc">
+            Your customized architectural ceiling fan is scheduled for precision calibration in our workshop. A tracking confirmation email has been dispatched.
+          </p>
+          <div class="success-details-card" id="successOrderCard">
+            <!-- Populated via JS -->
+          </div>
+          <button class="btn btn-primary" id="continueShoppingBtn">
+            <span>Return to Studio</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+    <!-- SCRIPTS -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
