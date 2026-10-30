@@ -92,12 +92,12 @@ class App {
 
     if (hudSpeedLabel) {
       const speedLabels = [
-        'STANDBY (OFF)',
-        'WHISPER (SPEED 1)',
-        'GENTLE BREEZE (SPEED 2)',
-        'COMFORT AIRFLOW (SPEED 3)',
-        'HIGH VELOCITY (SPEED 4)',
-        'TURBO CYCLONE (SPEED 5)'
+        'STANDBY',
+        'SPEED 1',
+        'SPEED 2',
+        'SPEED 3',
+        'SPEED 4',
+        'SPEED 5'
       ];
       hudSpeedLabel.textContent = speedLabels[telemetry.speed] || 'ACTIVE';
     }
@@ -415,7 +415,9 @@ class App {
   }
 
   bindNavigation() {
-    const navLinks = document.querySelectorAll('.main-nav .nav-link');
+    const mainNav = document.getElementById('mainNav');
+    const sliderLine = document.getElementById('navSliderLine');
+    const navLinks = Array.from(document.querySelectorAll('.main-nav .nav-link'));
     const sections = [
       document.getElementById('studio-section'),
       document.getElementById('collections-section'),
@@ -424,7 +426,26 @@ class App {
       document.getElementById('reviews-section')
     ].filter(Boolean);
 
-    // 1. Direct click on nav link: smooth scroll and immediately highlight active item
+    // Reposition the sliding yellow accent under the target active link
+    const moveIndicatorTo = (targetLink) => {
+      if (!targetLink || !sliderLine || !mainNav) return;
+      const navRect = mainNav.getBoundingClientRect();
+      const linkRect = targetLink.getBoundingClientRect();
+      const leftOffset = linkRect.left - navRect.left;
+      const linkWidth = linkRect.width;
+
+      sliderLine.style.width = `${linkWidth}px`;
+      sliderLine.style.transform = `translateX(${leftOffset}px)`;
+
+      navLinks.forEach((l) => l.classList.toggle('active', l === targetLink));
+    };
+
+    // Flag to prevent scroll spy from conflicting during programmatic click scroll
+    let isClickScrolling = false;
+    let clickTimeout = null;
+
+    // 1. Direct click on nav link:
+    // Glides yellow accent immediately to target link and scrolls smoothly to target section
     navLinks.forEach((link) => {
       link.addEventListener('click', (e) => {
         const href = link.getAttribute('href');
@@ -434,8 +455,14 @@ class App {
         const targetId = href.substring(1);
         const targetEl = document.getElementById(targetId);
 
-        navLinks.forEach((l) => l.classList.remove('active'));
-        link.classList.add('active');
+        // Immediately slide yellow accent to clicked link
+        moveIndicatorTo(link);
+
+        isClickScrolling = true;
+        if (clickTimeout) clearTimeout(clickTimeout);
+        clickTimeout = setTimeout(() => {
+          isClickScrolling = false;
+        }, 900);
 
         if (targetEl) {
           const header = document.getElementById('mainHeader');
@@ -451,30 +478,53 @@ class App {
       });
     });
 
-    // 2. Active Section Scroll Spy via IntersectionObserver
-    const observerOptions = {
-      root: null,
-      rootMargin: '-20% 0px -55% 0px',
-      threshold: [0, 0.2]
+    // 2. Continuous Scroll Spy:
+    // As page scrolls down, yellow accent smoothly glides to follow the active section
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (!isClickScrolling) {
+            const header = document.getElementById('mainHeader');
+            const headerHeight = header ? header.offsetHeight : 72;
+            const scrollPos = window.pageYOffset + headerHeight + 140;
+
+            // Find current section in view
+            let activeSec = sections[0];
+            for (let i = 0; i < sections.length; i++) {
+              const sec = sections[i];
+              if (sec.offsetTop <= scrollPos) {
+                activeSec = sec;
+              }
+            }
+
+            if (activeSec) {
+              const matchingLink = navLinks.find(
+                (l) => l.getAttribute('href') === `#${activeSec.id}`
+              );
+              if (matchingLink && !matchingLink.classList.contains('active')) {
+                moveIndicatorTo(matchingLink);
+              }
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          navLinks.forEach((link) => {
-            const href = link.getAttribute('href');
-            if (href === `#${id}`) {
-              link.classList.add('active');
-            } else {
-              link.classList.remove('active');
-            }
-          });
-        }
-      });
-    }, observerOptions);
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
-    sections.forEach((sec) => sectionObserver.observe(sec));
+    // Initial positioning & window resize listener
+    const initIndicator = () => {
+      const activeLink = document.querySelector('.main-nav .nav-link.active') || navLinks[0];
+      if (activeLink) moveIndicatorTo(activeLink);
+    };
+
+    // Ensure layout and fonts are rendered before positioning
+    setTimeout(initIndicator, 60);
+    setTimeout(initIndicator, 300);
+    window.addEventListener('resize', initIndicator, { passive: true });
   }
 
   bindCartAndCheckout() {

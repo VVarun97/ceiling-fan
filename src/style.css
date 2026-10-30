@@ -194,10 +194,13 @@ button {
 }
 
 /* Main Nav Links */
+/* Main Nav Links with Fluid Sliding Yellow Accent */
 .main-nav {
   display: flex;
   align-items: center;
   gap: 32px;
+  position: relative;
+  padding: 4px 0;
 }
 
 .nav-link {
@@ -206,8 +209,9 @@ button {
   color: var(--text-secondary);
   transition: color var(--transition-fast);
   position: relative;
-  padding: 8px 2px;
+  padding: 8px 4px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -216,33 +220,21 @@ button {
 
 .nav-link.active {
   color: #ffffff;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-.nav-link::after {
-  content: '';
+/* Fluid Sliding Yellow Accent Line */
+.nav-slider-line {
   position: absolute;
   bottom: 0;
   left: 0;
-  right: 0;
   height: 2px;
   background: var(--accent-gold);
   border-radius: var(--radius-full);
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease;
-  opacity: 0;
-  box-shadow: 0 0 10px var(--accent-gold-glow);
-}
-
-.nav-link.active::after {
-  transform: scaleX(1);
-  opacity: 1;
-}
-
-.nav-link:hover::after {
-  transform: scaleX(0.5);
-  opacity: 0.5;
+  box-shadow: 0 0 12px var(--accent-gold-glow);
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), width 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  will-change: transform, width;
 }
 
 /* Header Action Buttons */
@@ -417,40 +409,52 @@ button {
   color: var(--text-secondary);
 }
 
-/* Top Telemetry HUD */
-.viewer-hud-top {
+/* ==========================================================================
+   3D Fan Stage Top Navigation Bar (Telemetry + Camera Controls)
+   Zero Overlap Layout
+   ========================================================================== */
+.viewer-top-bar {
   position: absolute;
-  top: 24px;
-  left: 24px;
+  top: 16px;
+  left: 16px;
+  right: 16px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
-  z-index: 5;
+  z-index: 10;
   pointer-events: none;
 }
 
-.telemetry-pill {
-  display: flex;
+/* Compact Telemetry HUD Pill */
+.telemetry-compact-pill {
+  pointer-events: auto;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(10, 11, 15, 0.72);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border-subtle);
+  background: rgba(13, 16, 23, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-full);
   padding: 6px 14px;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  font-size: 0.78rem;
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+  user-select: none;
+  flex-shrink: 0;
 }
 
 .live-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   background: var(--accent-emerald);
   border-radius: 50%;
   box-shadow: 0 0 8px var(--accent-emerald);
   animation: pulse 1.8s infinite;
+  flex-shrink: 0;
 }
 
 .live-dot.stopped {
@@ -464,48 +468,67 @@ button {
   100% { transform: scale(0.9); opacity: 0.8; }
 }
 
-.telemetry-label {
-  color: var(--text-muted);
-  font-size: 0.7rem;
-  letter-spacing: 0.05em;
-}
-
-.telemetry-value {
-  color: #ffffff;
-  font-family: monospace;
-  font-size: 0.875rem;
-}
-
-.telemetry-unit {
-  color: var(--accent-gold);
-  font-size: 0.7rem;
+.telemetry-speed-tag {
   font-weight: 700;
-}
-
-.hud-icon {
-  width: 14px;
-  height: 14px;
   color: var(--accent-gold);
+  letter-spacing: 0.06em;
+  font-size: 0.75rem;
 }
 
-/* Camera Perspective Buttons */
+.telemetry-v-sep {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.75rem;
+  margin: 0 1px;
+}
+
+.telemetry-dot-sep {
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 0.65rem;
+}
+
+.telemetry-metric {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  font-family: var(--font-body);
+}
+
+.telemetry-metric strong {
+  font-family: monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.telemetry-metric small {
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* Camera Perspective Buttons Bar (relative in flex row, never obstructs telemetry) */
 .camera-controls-bar {
-  position: absolute;
-  top: 24px;
-  right: 24px;
-  display: flex;
+  pointer-events: auto;
+  position: relative;
+  top: auto;
+  right: auto;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(10, 11, 15, 0.72);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border-subtle);
+  gap: 4px;
+  background: rgba(13, 16, 23, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-full);
   padding: 4px;
-  z-index: 5;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .cam-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
@@ -513,22 +536,32 @@ button {
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
   transition: all var(--transition-fast);
+  white-space: nowrap;
 }
 
 .cam-btn i {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
 }
 
 .cam-btn:hover {
   color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .cam-btn.active {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.16);
   color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.cam-btn.icon-only {
+  padding: 6px 8px;
 }
 
 /* Floating Bottom Fan Controller Dock */

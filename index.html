@@ -48,12 +48,13 @@
         </a>
 
         <!-- Desktop Navigation -->
-        <nav class="main-nav" aria-label="Main Navigation">
+        <nav class="main-nav" id="mainNav" aria-label="Main Navigation">
           <a href="#studio-section" class="nav-link active">3D Studio Configurator</a>
           <a href="#collections-section" class="nav-link">Collections</a>
           <a href="#tech-specs" class="nav-link">Engineering</a>
           <a href="#room-calculator" class="nav-link">Room Sizer (CFM)</a>
           <a href="#reviews-section" class="nav-link">Reviews</a>
+          <span class="nav-slider-line" id="navSliderLine"></span>
         </nav>
 
         <!-- Right Utility Controls -->
@@ -107,51 +108,48 @@
               <p>Constructing Aerodynamic 3D Engine...</p>
             </div>
 
-            <!-- Top HUD: Live RPM & Telemetry Display -->
-            <div class="viewer-hud-top">
-              <div class="telemetry-pill">
+            <!-- Unified Top Bar: Telemetry Status + Camera Views (No Overlap) -->
+            <div class="viewer-top-bar" aria-label="Viewer Telemetry and Camera Views">
+              <!-- Left: Compact Telemetry HUD Pill -->
+              <div class="telemetry-compact-pill" title="Live fan speed and airflow metrics">
                 <div class="live-dot" id="liveSpeedDot"></div>
-                <span class="telemetry-label">SPEED:</span>
-                <span class="telemetry-value" id="hudSpeedLabel">GENTLE BREEZE (SPEED 2)</span>
+                <span class="telemetry-speed-tag" id="hudSpeedLabel">SPEED 2</span>
+                <span class="telemetry-v-sep">|</span>
+                <span class="telemetry-metric">
+                  <strong id="hudRpm">120</strong> <small>RPM</small>
+                </span>
+                <span class="telemetry-dot-sep">•</span>
+                <span class="telemetry-metric">
+                  <strong id="hudCfm">4,350</strong> <small>CFM</small>
+                </span>
+                <span class="telemetry-dot-sep">•</span>
+                <span class="telemetry-metric">
+                  <strong id="hudDb">18.2</strong> <small>dB</small>
+                </span>
               </div>
-              <div class="telemetry-pill">
-                <i data-lucide="gauge" class="hud-icon"></i>
-                <span class="telemetry-value" id="hudRpm">120</span>
-                <span class="telemetry-unit">RPM</span>
-              </div>
-              <div class="telemetry-pill">
-                <i data-lucide="wind" class="hud-icon"></i>
-                <span class="telemetry-value" id="hudCfm">4,350</span>
-                <span class="telemetry-unit">CFM</span>
-              </div>
-              <div class="telemetry-pill" title="Noise level at current speed">
-                <i data-lucide="volume-2" class="hud-icon"></i>
-                <span class="telemetry-value" id="hudDb">18.2</span>
-                <span class="telemetry-unit">dB</span>
-              </div>
-            </div>
 
-            <!-- Camera Perspective Selector Bar -->
-            <div class="camera-controls-bar" aria-label="Camera Perspective Views">
-              <button class="cam-btn active" data-view="perspective" title="3/4 Perspective Studio View">
-                <i data-lucide="box"></i>
-                <span>3/4 Angle</span>
-              </button>
-              <button class="cam-btn" data-view="bottom" title="View from Below (Ceiling Vortex)">
-                <i data-lucide="arrow-up-circle"></i>
-                <span>Ceiling View</span>
-              </button>
-              <button class="cam-btn" data-view="side" title="Side Profile">
-                <i data-lucide="align-justify"></i>
-                <span>Side Profile</span>
-              </button>
-              <button class="cam-btn" data-view="room" title="Architectural Living Room Context">
-                <i data-lucide="maximize"></i>
-                <span>In-Room View</span>
-              </button>
-              <button class="cam-btn" id="resetCamBtn" title="Reset View Angle">
-                <i data-lucide="rotate-ccw"></i>
-              </button>
+              <!-- Right: Camera Perspective Controls -->
+              <div class="camera-controls-bar" aria-label="Camera Perspective Views">
+                <button class="cam-btn active" data-view="perspective" title="3/4 Perspective Studio View">
+                  <i data-lucide="box"></i>
+                  <span>3/4 Angle</span>
+                </button>
+                <button class="cam-btn" data-view="bottom" title="View from Below (Ceiling Vortex)">
+                  <i data-lucide="arrow-up-circle"></i>
+                  <span>Ceiling</span>
+                </button>
+                <button class="cam-btn" data-view="side" title="Side Profile">
+                  <i data-lucide="align-justify"></i>
+                  <span>Side</span>
+                </button>
+                <button class="cam-btn" data-view="room" title="Architectural Living Room Context">
+                  <i data-lucide="maximize"></i>
+                  <span>Room</span>
+                </button>
+                <button class="cam-btn icon-only" id="resetCamBtn" title="Reset View Angle">
+                  <i data-lucide="rotate-ccw"></i>
+                </button>
+              </div>
             </div>
 
             <!-- Floating 3D Fan Control Bar (Speed, Direction, Light, Wind Streaks) -->
